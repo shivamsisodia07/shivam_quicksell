@@ -15,11 +15,13 @@ The Kanban board typically consists of a board with columns representing differe
 
 ## Author
 
-[@Shivam Sisodia](https://github.com/shivamsisodia07)
+<a href="https://github.com/shivamsisodia07">
+<img src="https://github.com/shivamsisodia07.png" alt="Shivam Sisodia" width="150" height="150">
+</a>
 
 ## Screenshots
 
-<img width="100%" align="center" alt="Conventional Supply Chain" src="./screenshots/img1.png">
+<img width="100%" align="center" alt="Kanban-Board" src="./screenshots/img1.png">
 
 
 
