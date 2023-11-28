@@ -151,7 +151,7 @@ function Home() {
 
      
       {filteredData ?
-        <div className="container" style={{background:"red"}}>
+        <div className="container" >
           {arr.length && arr.map((item, i) => {
             //console.log(item);
             return <Category title={item.title} value={item.value} arr={filteredData["tickets"]} grouping={grouping} key={i}> </Category>
