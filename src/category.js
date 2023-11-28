@@ -4,7 +4,8 @@ function category(props) {
   return (
     
       <div className="col">
-        <div className="cghead">
+      <div className="cgbox">
+      <div className="cghead">
           <div className="flexbox">
             <div>{props.title}</div>
             <div style={{ padding: "0px 5px" }}>2</div>
@@ -38,6 +39,8 @@ function category(props) {
             .map((item, i) => {
               return <Card item={item} key={item.id}></Card>;
             })}
+      </div>
+       
       </div>
    
   );
