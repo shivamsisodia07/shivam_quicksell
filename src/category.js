@@ -6,10 +6,20 @@ function category(props) {
       <div className="col">
       <div className="cgbox">
       <div className="cghead">
-          <div className="flexbox">
-            <div>{props.title}</div>
-            <div style={{ padding: "0px 5px" }}>2</div>
-          </div>
+      <div className="flexbox">
+          {props.image && <img src={props.image} className="corner-img" />}
+          <div>{props.title}</div>
+          {props.grouping == "Priority" &&
+            <div style={{ padding: "0px 5px" }}>{props.arr
+              .filter((item) => item.priority === props.value).length}</div>}
+          {props.grouping == "Status" &&
+            <div style={{ padding: "0px 5px" }}>{props.arr
+              .filter((item) => item.status === props.value).length}</div>}
+          {props.grouping == "User" &&
+            <div style={{ padding: "0px 5px" }}>{props.arr
+              .filter((item) => item.userId === props.value).length}</div>}
+
+        </div>
           <div className="flexbox">
             <div>
               <span class="material-symbols-outlined">add</span>

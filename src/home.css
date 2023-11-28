@@ -190,7 +190,7 @@ width: 100%;
   justify-content: space-between;
   color: #ffffff;
   padding: 5px 20px;
-  background: #419197;
+  background: #2f2eaab8;
   border-radius: 15px;
   cursor: pointer;
 }
@@ -201,3 +201,9 @@ width: 100%;
   align-items: center;
 }
 /* category */
+
+
+.corner-img{
+  width: 20px;
+  padding: 6px;
+}

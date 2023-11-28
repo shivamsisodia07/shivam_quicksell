@@ -10,8 +10,9 @@ function Home() {
     localStorage.setItem("order", "Priority");
   }
   let usersArr = [];
-  const priorityArr = [{ title: "Urgent", value: 4 }, { title: "High", value: 3 }, { title: "Medium", value: 2 }, { title: "Low", value: 1 }, { title: "No Priority", value: 0 }];
-  const statusArr = [{ title: "Backlog", value: "Backlog" }, { title: "Todo", value: "Todo" }, { title: "In progress", value: "In progress" }];
+  const priorityArr = [{ title: "Urgent", value: 4, path: "./images/urgent.png" }, { title: "High", value: 3, path: "./images/high.png" }, { title: "Medium", value: 2, path: "./images/med.png" }, { title: "Low", value: 1, path: "./images/low.png" }, { title: "No Priority", value: 0,path: "./images/pending.png" }];
+
+  const statusArr = [{ title: "Backlog", value: "Backlog", path: "./images/pending.png" }, { title: "Todo", value: "Todo", path: "./images/todo.png" }, { title: "In progress", value: "In progress", path: "./images/inprogress.png" }, { title: "Done", value: "Done", path: "./images/done.png" }, { title: "Cancelled", value: "Cancelled", path: "./images/backlog.png" }];
   // FETCHING USER INFO
 
   const filter = { "Status": statusArr, "Priority": priorityArr, "User": usersArr };
@@ -21,14 +22,6 @@ function Home() {
   const [arr, setArr] = useState(filter[grouping]);
   //const [, forceUpdate] = useState();
   useEffect(() => {
-    if (!localStorage.getItem("group")) {
-      localStorage.setItem("group", "Status");
-    }
-    if (!localStorage.getItem("order")) {
-      localStorage.setItem("order", "Priority");
-    }
-
-    // console.log("api calling");
     fetch("https://api.quicksell.co/v1/internal/frontend-assignment")
       .then((response) => response.json())
       .then((json) => {
@@ -37,17 +30,32 @@ function Home() {
         json["users"].map((item) => {
           usersArr.push({ title: item.name, value: item.id })
         })
-        sortData(ordering,json);
-        // console.log("bckwbcekbvkre");
-       
+        if (ordering == "Title") {
+          json["tickets"].sort(function (a, b) {
+            if (a.title < b.title) return -1;
+            if (a.title > b.title) return 1;
+            return 0;
+          });
+        }
+        else if (ordering == "Priority") {
+          json["tickets"].sort(function (a, b) {
+            if (a.priority < b.priority) return -1;
+            if (a.priority > b.priority) return 1;
+            return 0;
+          });
+        }
+        setfilteredData(json);
+
+
+
         if (grouping == "User") {
           setArr(usersArr);
         }
-
       })
       .catch((error) => console.error(error));
-
   }, []);
+
+
 
 
   // ON CHANGING GROUPING VALUE
@@ -58,7 +66,7 @@ function Home() {
     else if (e.target.value === "User") {
       usersArr = [];
       filteredData["users"].map((item) => {
-        usersArr.push({ title: item.name, value: item.id })
+        usersArr.push({ title: item.name, value: item.id,path:'' })
       })
       setArr(usersArr);
     }
@@ -74,12 +82,12 @@ function Home() {
   // ON CHANGING ORDERING VALUE
   function orderChange(e) {
     localStorage.setItem("order", e.target.value);
-    sortData(e.target.value,filteredData);
+    sortData(e.target.value);
     setOrdering(e.target.value);
   }
 
   // SORTING FUNCTION
-  function sortData(parameter,filteredData) {
+  function sortData(parameter) {
     if (parameter === "Title") {
       // console.log("sort calling Title");
       filteredData["tickets"].sort(function (a, b) {
@@ -105,13 +113,13 @@ function Home() {
 
     <div>
       <nav>
-        <div class="dropdown">
+        <div className="dropdown">
           <div className="display-btn">
-            <span class="material-symbols-outlined">tune</span>
+            <span className="material-symbols-outlined">tune</span>
             <span style={{ justifyContent: "center" }}>Display</span>
-            <span class="material-symbols-outlined">expand_more</span>
+            <span className="material-symbols-outlined">expand_more</span>
           </div>
-          <div class="dropdown-content">
+          <div className="dropdown-content">
             <div className="grouping">
               <h5>Group By: </h5>
               <select
@@ -144,20 +152,20 @@ function Home() {
       </nav>
 
 
-     <div className="flexbox">
-      <h4 style={{padding:"0px 5px 0px 20px"}}>Grouping:  </h4>{grouping}
-      <h4 style={{padding:"0px 5px 0px 20px"}}>Ordering:  </h4> {ordering}
-      </div> 
+      <div className="flexbox">
+        <h4 style={{ padding: "0px 5px 0px 20px" }}>Grouping:  </h4>{grouping}
+        <h4 style={{ padding: "0px 5px 0px 20px" }}>Ordering:  </h4> {ordering}
+      </div>
 
-     
+
       {filteredData ?
         <div className="container" >
           {arr.length && arr.map((item, i) => {
             //console.log(item);
-            return <Category title={item.title} value={item.value} arr={filteredData["tickets"]} grouping={grouping} key={i}> </Category>
+            return <Category title={item.title} value={item.value} arr={filteredData["tickets"]} grouping={grouping} key={i} image={item.path}> </Category>
           })}
         </div> : "No Tickets Found"}
-   
+
     </div>
   );
 }
